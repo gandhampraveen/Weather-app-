@@ -1,0 +1,521 @@
+<html>
+  <head>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+
+
+
+body{
+  background:#222;
+}
+.card{
+  width:100%;
+  max-width:500px;
+  background: linear-gradient(135deg,#00feba,#5b548a);
+  color:#fff;
+  margin:100px auto 0;
+  border-radius:20px;
+  padding:40px 35px;
+  text-align: center;
+  height:800px;
+}
+.search{
+  width:10px;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+  .search input{
+    border:0;
+    outline:0;
+    background:#ebfffc;
+    color:#555;
+    padding:10px 25px;
+    height:60px;
+    border-radius:30px;
+    flex:1;
+    margin-right:16px;
+    font-size:18px;
+    width:900px;
+    align-items: center;
+    align-content: center;
+  }
+  .search button{
+    border:0;
+    outline:0;
+    background:#ebfffc;
+    border-radius:50%;
+    width:60px;
+    height:60px;
+    cursor:pointer;
+  }
+  .search button img{
+    width:26px;
+  }
+.weather-icon{
+  width:170px;
+  margin-top:30px;
+}
+.weather h1{
+  font-size:80px;
+  font-weight:500;
+}
+.weather h2{
+  font-size:45px;
+  font-weight:400;
+  margin-top:-10px;
+}
+.details{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 0 100px;
+  margin-top:100px;
+}
+.col{
+  display:flex;
+  align-items:center;
+  text-align:left;
+}
+.col img{
+  width: 80px;
+  margin-right: 30px;
+  
+}
+.humidity,.wind {
+  font-size: 26px;
+  margin-top:-3px;
+  padding-left:20px;
+
+}
+.weather{
+  display: none;
+}
+
+
+
+.*{
+  width:100px;
+  height:100px;
+  font-family: poppins,Sans-Serif;
+  padding:25px;
+}
+body{
+  background:#80808;
+  color:#fff;
+}
+#header{
+  width:100%;
+  height:100vh;
+  background-image:url("https://i.ibb.co/Ld7MrVYW/IMG-20240814-084339.jpg");
+  background-size:cover;
+  background-position:center;
+}
+.container{
+  padding:10px 10%;
+}
+nav{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+}
+nav ul li{
+  display:inline-block;
+  list-style: none;
+  margin:10px 20px;
+}
+nav ul li a{
+  color:#fff;
+  text-decoration: none;
+  font-size:18px;
+  
+}
+nav ul li a::after{
+  content:'';
+  width:100%;
+  height:3px;
+  background: #ff004f;
+  position:absolute;
+  left:0;
+  bottom:-6px;
+}
+nav ul li a:hover::after{
+  width:100%;
+}
+.header-text{
+  margin-top:20%;
+  font-size:20px;
+}
+header-text h1{
+  font-size:30px;
+  margin-top:20px;
+}
+.header-text h1 span{
+  color:#ff004f;
+}
+#about{
+  padding:80px 0;
+  color:#ababab;
+}
+.row{
+  display:flex;
+  justify-content: space-between;
+  flex-wrap:wrap;
+}
+.about-col-1{
+  flex-basis: 35%;
+}
+.about-col-1 img{
+  width:200%;
+  border-radius:50px;
+}
+.about-col-2{
+  flex-basis:60%;
+}
+.tab-titles{
+  display:flex;
+  margin:20px 0 40px;
+}
+.tab-links{
+  margin-right:30px;
+  font-size:18px;
+  font-weight:100%;
+  cursor:pointer;
+  align-content: center;
+  position:relative;
+  
+}
+.tab-links::after{
+  content:'';
+  width:0;
+  height:3px;
+  background:#ff004f;
+  position:absolute;
+  left:0;
+  bottom:-8px;
+  transition:0.5s;
+}
+.tab-links.active-link::after{
+  width:50%;
+}
+  
+  
+.tab-contents ul li{
+  list-style: none;
+  margin:10px 0;
+}
+.tab-contents ul li span{
+  color:#b54769;
+  font-size:14px;
+}
+.tab-contents{
+  display:none;
+}
+.tab-contents.active-link{
+  display: block;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="search">
+        <input type="text" placeholder="Enter city name" spellcheck="false">
+        <button>
+         <img src="https://i.ibb.co/yB0VGNYp/images.png">
+        </button>
+      </div>
+
+      <div class="weather">
+        <img src="https://i.ibb.co/JwGXLHL9/clouds.png" class="weather-icon">
+        <h1 class="temp">28°C</h1>
+        <h2 class="city">gudlavalleru</h2>
+
+        <div class="details">
+          <div class="col">
+            <img src="https://i.ibb.co/G4KLY9Tm/humidity.png">
+<div>
+              <p class="humidity">50%</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+
+          <div class="col">
+            <img src="https://i.ibb.co/gbbFfpky/wind.png">
+            <div>
+              <p class="wind">15km/h</p>
+              <p>Wind speed</p>
+
+    <script>
+      const apiKey ="5910f5f32ee00bcb81e4618fc04502ca";
+      const apiUrl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+      const searchBox = document.querySelector(".search input");
+      const searchBtn = document.querySelector(".search button");
+const weatherIcon=document.querySelector("weather-icon");
+      async function checkWeather(city) {
+        try {
+          const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+          const data = await response.json();
+
+          if (data.cod === "404") {
+            alert("City not found!");
+            return;
+          }
+
+          document.querySelector(".city").innerHTML = data.name;
+          document.querySelector(".temp").innerHTML = Math.round(data.main.temp) +"°C";
+
+document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+          document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+
+          // Optional: Update weather icon based on condition
+          // document.querySelector(".weather-icon").src = "your_icon_logic_here";
+          if(data.weather[0].main=="clouds"){
+  weatherIcon.src="https://i.ibb.co/JwGXLHL9/clouds.png";
+}
+else if(data.weather[0].main=="clear"){
+  weatherIcon.src="https://i.ibb.co/1G1qSQGq/clear.png";
+}
+document.querySelector(".weather").style.display="block";
+
+
+
+        } catch (error) {
+          console.error("Error fetching weather:", error);
+          alert("Failed to fetch weather data.");
+        }
+      }
+
+
+
+
+
+
+      searchBtn.addEventListener("click", () => {
+        const city = searchBox.value.trim();
+        if (city !== "") {
+          checkWeather(city);
+        } else {
+          alert("Please enter a city name.");
+        }
+      });
+    </script>
+  </body>
+</html>
+
+
+body{
+  background:#222;
+}
+.card{
+  width:100%;
+  max-width:500px;
+  background: linear-gradient(135deg,#00feba,#5b548a);
+  color:#fff;
+  margin:100px auto 0;
+  border-radius:20px;
+  padding:40px 35px;
+  text-align: center;
+  height:800px;
+}
+.search{
+  width:10px;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+  .search input{
+    border:0;
+    outline:0;
+    background:#ebfffc;
+    color:#555;
+    padding:10px 25px;
+    height:60px;
+    border-radius:30px;
+    flex:1;
+    margin-right:16px;
+    font-size:18px;
+    width:900px;
+    align-items: center;
+    align-content: center;
+  }
+  .search button{
+    border:0;
+    outline:0;
+    background:#ebfffc;
+    border-radius:50%;
+    width:60px;
+    height:60px;
+    cursor:pointer;
+  }
+  .search button img{
+    width:26px;
+  }
+.weather-icon{
+  width:170px;
+  margin-top:30px;
+}
+.weather h1{
+  font-size:80px;
+  font-weight:500;
+}
+.weather h2{
+  font-size:45px;
+  font-weight:400;
+  margin-top:-10px;
+}
+.details{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 0 100px;
+  margin-top:100px;
+}
+.col{
+  display:flex;
+  align-items:center;
+  text-align:left;
+}
+.col img{
+  width: 80px;
+  margin-right: 30px;
+  
+}
+.humidity,.wind {
+  font-size: 26px;
+  margin-top:-3px;
+  padding-left:20px;
+
+}
+.weather{
+  display: none;
+}
+
+
+
+.*{
+  width:100px;
+  height:100px;
+  font-family: poppins,Sans-Serif;
+  padding:25px;
+}
+body{
+  background:#80808;
+  color:#fff;
+}
+#header{
+  width:100%;
+  height:100vh;
+  background-image:url("https://i.ibb.co/Ld7MrVYW/IMG-20240814-084339.jpg");
+  background-size:cover;
+  background-position:center;
+}
+.container{
+  padding:10px 10%;
+}
+nav{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+}
+nav ul li{
+  display:inline-block;
+  list-style: none;
+  margin:10px 20px;
+}
+nav ul li a{
+  color:#fff;
+  text-decoration: none;
+  font-size:18px;
+  
+}
+nav ul li a::after{
+  content:'';
+  width:100%;
+  height:3px;
+  background: #ff004f;
+  position:absolute;
+  left:0;
+  bottom:-6px;
+}
+nav ul li a:hover::after{
+  width:100%;
+}
+.header-text{
+  margin-top:20%;
+  font-size:20px;
+}
+header-text h1{
+  font-size:30px;
+  margin-top:20px;
+}
+.header-text h1 span{
+  color:#ff004f;
+}
+#about{
+  padding:80px 0;
+  color:#ababab;
+}
+.row{
+  display:flex;
+  justify-content: space-between;
+  flex-wrap:wrap;
+}
+.about-col-1{
+  flex-basis: 35%;
+}
+.about-col-1 img{
+  width:200%;
+  border-radius:50px;
+}
+.about-col-2{
+  flex-basis:60%;
+}
+.tab-titles{
+  display:flex;
+  margin:20px 0 40px;
+}
+.tab-links{
+  margin-right:30px;
+  font-size:18px;
+  font-weight:100%;
+  cursor:pointer;
+  align-content: center;
+  position:relative;
+  
+}
+.tab-links::after{
+  content:'';
+  width:0;
+  height:3px;
+  background:#ff004f;
+  position:absolute;
+  left:0;
+  bottom:-8px;
+  transition:0.5s;
+}
+.tab-links.active-link::after{
+  width:50%;
+}
+  
+  
+.tab-contents ul li{
+  list-style: none;
+  margin:10px 0;
+}
+.tab-contents ul li span{
+  color:#b54769;
+  font-size:14px;
+}
+.tab-contents{
+  display:none;
+}
+.tab-contents.active-link{
+  display: block;
+}
